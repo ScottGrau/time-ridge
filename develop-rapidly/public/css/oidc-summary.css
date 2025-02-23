@@ -1,0 +1,32 @@
+table {
+    background-color: rgb(133, 180, 182);
+    padding: 5px;
+}
+th {
+    background-color:  rgb(133, 180, 182);
+    padding: 5px;
+}
+td {
+    background-color:  rgb(60, 71, 69);
+    color: white;
+    padding: 5px;
+}
+.flex-main-wrapper {    
+    /*
+    display: inline-flex; 
+    flex-wrap: wrap; 
+    justify-content: space-around;
+    */
+}
+table, th, td {
+    border: 1px solid black;
+  }
+  .flex-main{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    justify-content:space-between;
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+  }

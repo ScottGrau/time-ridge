@@ -1,0 +1,108 @@
+
+        <article class="flex-main" style="background-color: white; padding: 10px">
+        <section>
+            <h2 class="lead">Client Credentials Grant Type</h2>
+            <ul>
+                <li><strong>What It Does:</strong> Provides Service to Service Authentication</li>
+                <li><strong>When To Use It:</strong> When a User Identity is not needed(ie Automated Tasks, Web Service Requests)  </li>
+                <li><strong>How to Use It:</strong> Call  Must use SSL and PCKE is recommneded</li>
+            </ul>
+            <div style="padding: 10px;">
+                Open ID Connect can be used to authenticate services or processes that run without user intervention
+                when the Client Credentials Grant Type is used.  Although many libraries are availale to assist in code implementation,
+                the native form using http calls is simple and fairly easy use as shown below
+            </div>
+            <a href="images/OIDC_Client_Credentials.png">
+                <figure style="padding: 20px; float:right">                
+                    <img src="images/OIDC_Client_Credentials.png"/>
+                </figure>
+            </a>
+        </section>
+        <section>
+            <div style="padding: 20px;">
+                    <h2>1. Configure the IdP </h2>
+                    <div>
+                        OIDC is centered around an Identity Provider (IdP), which is a web service capable of creating and validating JWT tokens
+                        for both users and services. Examples are OKTA, Azure, and Ping. After making an application registration entry in the IdP
+                        two pieces of metadata are used to aquire the token.  
+                        <ul>
+                            <li>Client Id: Sometimes called application id, which identifies your application</li>
+                            <li>Client Secret: A private key, used to identify your app and used by IdP generate the token</li>
+                            <li>Default Scope: Authorization identifier, which allows full access to application unless configured</li>
+                            <li>Tenant Token Endpoint:  </li>
+                        </ul>
+                    </div>
+                    <h2>2. Create the logic to form the  payload to aquire the token</h2>
+                    <div>
+                        Using the metadata above, a request payload string will need to be created in your application's logic.  The form is shown below using colons to separate 
+                        keys value pairs, as well as carrage returns to separate each pair.
+                
+
+                        <ul>
+                            <li>grant_type:client_credentials/r/n</li>
+                            <li>client_id:[client id]/r/n,</li>
+                            <li>client_secret:[client secret]/r/n</li>
+                            <li>scope:[default scope]</li>
+                            
+                        </ul>    
+                        
+                    </div>
+
+                    <h2>3. Send the http request to aquire to the JWT token</h2>
+                    <div>
+                        In your application, implement a libarary or application framework extension that provides automated https request/response operations to send a request that 
+                        will contain the JWT token in the response.  The response will be in string form and have an id_token. The following parameters should be used to configure the request  
+                    <ul>
+                        <li>URL - https://[tenant]../token?</li>
+                        <li>Header - Content-Type: application/x-www-form-urlencoded </li> 
+                        <li>Method - POST</li>
+                        <li>Body - request payload string created in above step</li>
+                    </ul>
+                    </div>
+                    
+
+                    <h2>4. Make request with token in header</h2>
+                    <div>
+                        The json reponse to the request in the above step will contain a property called id_token, which is a JWT token that will be used to prove your application's authentication 
+                        when making requests to other services. A common way to extract the token and use it in http requests to web services. The strategy for the application logic is as follows:
+                        <ul>
+                            <li>Load the key value string into an untyped dictionary (i.e. javascript/python variable, dynamic object in .net)</li> 
+                            <li>Read the id_token property and store the JWT token to browser storage or a cookie.</li>
+                            <li>In subsiquent http requests to services, Add a header in the form of Authorization:bearer  [id_token]. (Replace [id_token] with token described above) </li>                    
+                        </ul>
+                    </div>
+
+                    <h2>5. Configure App Service to validate token</h2>
+                    <div>
+                        It is important to keep in mind that in order for a service to be secure using token based authentication the tokens must be validated after the JWT 
+                        is recieved in the header of incoming requests. Similar to aquiring the token, many libaries exist to assist in implementing the logic.  
+                        However, all must follow the process below to validate the token and ensure the endpoint is not being tampered with.
+                        <ul>
+                            <li>Issuer ID </li>
+                            <li>Key ID </li>
+                            <li>Expiration Time </li>
+                            <li>Public Key: Validates Signiture</li>
+                        </ul>
+                        
+
+
+                    </div>
+
+                    <h2>Implement PCKE (optional)</h2>
+            </div>
+
+        </section>
+        </article>               
+           
+
+                          <!--
+                    
+                    POST /{tenant}/oauth2/v2.0/token HTTP/1.1           //Line breaks for clarity
+Host: login.microsoftonline.com:443
+
+
+client_id=00001111-aaaa-2222-bbbb-3333cccc4444
+&scope=https%3A%2F%2Fgraph.microsoft.com%2F.default
+&client_secret=qWgdYAmab0YSkuL1qKv5bPX
+&grant_type=client_credentials
+                    -->

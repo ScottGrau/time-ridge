@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="css/oidc-summary.css">
+    <article class="flex-main" style="border:1px solid blue">
+        <h2 class="lead">Open ID Connect (OIDC) Overview</h2>
+        <section>
+            <h3>What is OIDC?</h3>        
+            <p>
+                OIDC is a highly secure, loosely coupled token based application level protocol typically used to authenticate users and serices. 
+                Often called a "flow" the authentication process usually requires multiple redirects and requests over https resulting in a JWT token that can be used by both web 
+                client and api services as different areas of a RIA or web site are accessed.  
+            </p>
+            <aside>
+                <h4>How is OIDC Used?</h4>
+                <ul>
+                    <li>The actual exchange of user credentials (username/password, retinal scan, etc) occurs within the IdP domain when configured</li>
+                    <li>Also can be used to securely authenticate services using using private key (client secret) instead of password</li>
+                    <li>The OIDC protocol allows the "flow" or protocol configuration to be altered based on environment application need, which are called Grant Types and desribed below</li>
+                </ul>
+            </aside>
+        </section>
+        <section>
+            <h3>Grant Types</h3>
+            <p>OIDC is decoupled and can run on many platforms and environments requiring the protocol to be highly configurable based on application need. 
+            The configuration consists of channging Grant Type, which will alter the http sequence ("flow") required by the protocol to receive a JWT token. 
+            </p>
+            <aside>
+               
+                <table>
+                    <thead><tr><th>Name</th><th>Usage</th><th>Description</th></tr></thead>            
+                    <tbody>
+                        <tr>
+                            <th scope="row">Authorization Code</th>
+                            <td>Most Secure End User Autthentication</td>
+                            <td>Ensures end user's use IdP services for actual identity verification (i.e. password entry, retina scan,etc)</td>
+                            
+                        </tr>
+                        <tr>
+                            <th scope="row">Client Credentials</th>
+                            <td>Use for Service to Service authentication</td>
+                            <td>Typically used for automation. Should not be used for user impersonation</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Implicit Grant Type</th>
+                            <td>Used in environments where handling client secret is not feasible</td>
+                            <td>Similar to authorization code grant, except token provied after login instead of autorization code.  Often used for mobile apps. Should always be used with PKCE</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Resource Owner Password</th>
+                            <td>Used when username/password of use are forwarded to IdP (ie custom login form) </td>
+                            <td>A highy insecure method of authentication due touser credentials are handled outside of IdP domain. Usage is not advised</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Resource Owner Password</th>
+                            <td>Used when username/password of use are forwarded to IdP (ie custom login form) </td>
+                            <td>A highy insecure method of authentication due touser credentials are handled outside of IdP domain. Usage is not advised</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Resource Owner Password</th>
+                            <td>Used when username/password of use are forwarded to IdP (ie custom login form) </td>
+                            <td>A highy insecure method of authentication due touser credentials are handled outside of IdP domain. Usage is not advised</td>
+                        </tr>        
+                        <tr>
+                            <th scope="row">Device Code Flow</th>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">On Behalf Flow</th>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </aside>
+        </section> 
+    </article>
+

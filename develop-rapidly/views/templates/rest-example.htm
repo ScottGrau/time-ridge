@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="css/rest-exanmple.css">
+<div class="container my-5">
+    <div style="display: inline-flex; flex-wrap: wrap; justify-content: space-around;" >
+        <article class="flex-main">
+    <section>
+        <h2>Node JS REST API Example</h2>  
+        <ul>
+            <li><strong>What it does:</strong> Provides Database Operations for Client Applications</li>
+            <li><strong>When to use it:</strong> Whenever Data is Created, Read, Updated, or Deleted (CRUD)</li>
+            <li><strong>How to Use it:</strong> Typically a single page web application (SPA) will send an recieve data to the REST controller endpoints </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Building a Node JS REST API Step by Step</h2>
+
+        <h3>Step 1. Create a simple node js using Express CLI</h3>
+        <p>
+            In this example, Express will be used as both an application generator and as a routing libarary to handle incoming http requests
+            After running Express CLI a web application will be created similar to below.
+            
+        </p>
+        <p>
+            An additonal line has been added to to route the requests for the Vehicle data resource
+        </p>
+
+        <figure><img src="article-images/rest-data-app.png"/></figure>
+
+        <h3>Step 2. Create the REST Controller for CRUD Operations</h3>
+        <p>
+            Making the controller to read and change data requires little code when using Express middleware.
+            The request and response parameters are convienently provided allowing simplified access to 
+            request properties, as well as, full control of the http response. </p>
+           
+            <figure><img src="../../assets/rest-controller.png"/></figure>
+        <h3>Step 3. Create data access logic</h3>
+        <p>
+            Most coding patters try to the make the controller code as minimal as possible. For this reason,
+            the data access logic is typically contained in a separate file often called repository, although 
+            it's logic usually doesn't actually store the data.  Below is an example of a repository, which conducts
+            all CRUD operations using the Postgres database connector. 
+            <figure><img src="../../assets/rest-data-repository.png"/></figure>
+        </p>
+
+        </section>
+
+        </article>
+    </div>
+</div>

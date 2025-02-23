@@ -1,0 +1,15 @@
+form {
+    margin: 2vh;
+    background-color: rgb(204, 217, 228);
+    display: flex;
+    flex-direction: row;
+}
+button {
+    display: inline-flex;
+    justify-content: end;
+
+}
+img {
+    width: 50vh; 
+    
+}

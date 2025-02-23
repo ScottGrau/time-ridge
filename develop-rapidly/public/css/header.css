@@ -1,0 +1,10 @@
+.logo {
+  width:300px;
+  margin-left: 100px;
+}
+.nav-item dropdown {
+    padding:10px
+}
+.nav-link {
+  font-weight: bold;
+}

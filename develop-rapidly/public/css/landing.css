@@ -1,0 +1,24 @@
+.flex-sidebar{
+    border-left: 1px solid gray;
+    padding-left: 20px;
+}
+.flex-main{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 850px;
+    justify-content:space-between;
+  }
+  .tile-main {
+    width:400px; 
+    padding: 10px
+  }
+  .image-main {
+    width:200px;
+    margin:20px;
+    padding:10px;
+  }
+  .image-side {
+    width:100px;
+    margin:20px;
+    padding:10px;
+  }

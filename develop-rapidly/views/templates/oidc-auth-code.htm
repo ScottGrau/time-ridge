@@ -1,0 +1,151 @@
+<div style="display: inline-flex; flex-wrap: wrap; justify-content: space-around;" >
+    <article  class="flex-main">
+    <section>
+        <h2 class="lead">Authorization Code Grant Type</h2>  
+        <ul>
+            <li><strong>What it does:</strong> Provides User Authentication, securely conducted on the Identity Provider Domian </li>
+            <li><strong>When To Use it:</strong> Whenever a user (real person) meeds to authenticated by their native IdP  </li>
+            <li><strong>How to Use it:</strong>Redirect user to IdP /authorization endpoint and exchange returned code for a token</li>
+        </ul>
+        <div style="padding: 10px;">
+            Open ID Connect authorization code grant type should always be used to authenticate end users for the 
+            reason that the IdP entirely handles all aspects of the verifying the end user's actual identity. 
+            Mechanisms such as password entry, facial recognition, and card based are availble exclusively after 
+            redirecting the user login to the IdP's authorization endpoints.  Further, no sensitive end user metadata needs to 
+            held by the application and it's services, which helps decrease tlhe applications security vector.
+            
+            Although many libraries are availale to assist in code implementation, 
+            the native form using http calls is simple and fairly easy use as shown below
+        </div>
+        <figure style="padding: 20px; float:right">
+            <h3>Authorization Code OIDC Flow</h3>
+            <img src="article-images/OIDC_Authorization_Code.png"/>
+        </figure>
+    </section>
+        <h2>How to Setup Authorization Code Flow</h2>
+        <div style="padding: 20px;">
+            
+            <strong>1. Configure the IdP </strong>
+            <div>
+                OIDC is centered around an Identity Provider (IdP), which is a web service capable of creating and validating JWT tokens
+                for both users and services. Examples are OKTA, Azure, and Ping. After making an application registration entry in the IdP
+                two pieces of metadata are used to aquire the token.  
+                <ul>
+                    <li>Client Id: Sometimes called application id, which identifies your application</li>
+                    <li>Client Secret: A private key, used to identify your app and used by IdP generate the token</li>
+                    <li>Default Scope: Authorization identifier, which allows full access to application unless configured</li>
+                    <li>Tenant Token Endpoint:  </li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="padding: 20px;">
+            
+            <strong>2. Create Logic to Redirect User to IdP </strong>
+            <div>
+                When the user first enters resource consumer domain (i.e. web site or ria portal) the JWT token will not be stored in the users browser or my be expired.
+                In this circumstance, the user must be redirected to the /authorization endpoint of the IdP for secure login. Most far reaching web sites will allow anoymous access 
+                and provide a login button for registered users. RIA Business applications however, typically automatically redirct the user directly to the IdP any URL is requested 
+                from the domain without a valid token.  Either approaches will require formulation of the redirect URL, which consists of the following: 
+                <ul>
+                    <li>https://[tenant]../authorization</li>
+                    <li>?client_id=[aquired from above step]</li> 
+                    <li>&response_type=code</li>
+                    <li>&redirect_uri=[the URL which will response to redirect, see next step ]</li>
+                    <li>&response_mode=query</li>
+                    <li>&nonce=[globally unique random string, used by IdP stop replay attacks]</li>
+                    <li>&scope=[aquired from above step]</li>
+                    <li>&code_challenge=[optional see PKCE section ]</li>
+                    <li>&code_challenge_method=[optional see PKCE section ]</li>
+
+                </ul>
+            </div>
+
+        </div>
+
+        <!--
+        https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize?
+client_id=00001111-aaaa-2222-bbbb-3333cccc4444
+&response_type=code
+&redirect_uri=http%3A%2F%2Flocalhost%2Fmyapp%2F
+&response_mode=query
+&scope=https%3A%2F%2Fgraph.microsoft.com%2Fmail.read
+&state=12345
+&code_challenge=YTFjNjI1OWYzMzA3MTI4ZDY2Njg5M2RkNmVjNDE5YmEyZGRhOGYyM2IzNjdmZWFhMTQ1ODg3NDcxY2Nl
+&code_challenge_method=S256
+        -->
+
+        <strong>3. Create the logic to exchange authorization code for JWT token </strong>
+        <div>
+            Once the user has been successfully authenticated by IdP, an authorization code consisting of 3 segments in base64 encoding will be returned to 
+            the url set in the redirect_url in the above step.  The redirect URL is normally inside of the application's domain and will execute logic to exchange the 
+            authorization code for a JWT token.  Two techniques are availble for the exchange which are listed below.  
+            
+            <ul>
+                <li>Server Side - Using an server side logic, the authorization code and client secret are posted to IdP.</li>
+                <li>Client Side - Using javascript in the bowser and PCKE, the authorization code and client secret are posted to IdP.</li>
+            </ul>
+        </div>
+
+        <strong>4. Create the logic to form the  payload to aquire the token</strong>
+        <div>
+            Using the metadata above, a request payload string will need to be created in your application's logic.  The form is shown below using colons to separate 
+            keys value pairs, as well as carrage returns to separate each pair.  
+    
+
+            <ul>
+                <li>grant_type:authorization_code/r/n</li>
+                <li>client_id:[client id]/r/n,</li>
+                <li>client_secret:[client secret]/r/n</li>
+                <li>scope:[default scope]</li>
+                
+            </ul>    
+            
+        </div>
+
+
+        <strong>3. Send the http request to aquire to the JWT token</strong>
+        <div>
+            In your application, implement a libarary or application framework extension that provides automated https request/response operations to send a request that 
+            will contain the JWT token in the response.  The response will be in string form and have an id_token. The following parameters should be used to configure the request  
+        <ul>
+            <li>URL - https://[tenant]../token?</li>
+            <li>Header - Content-Type: application/x-www-form-urlencoded </li> 
+            <li>Method - POST</li>
+            <li>Body - request payload string created in above step</li>
+        </ul>
+        </div>
+        
+
+        <strong>4. Make request with token in header</strong>
+        <div>
+            The json reponse to the request in the above step will contain a property called id_token, which is a JWT token that will be used to prove your application's authentication 
+            when making requests to other services. A common way to extract the token and use it in http requests to web services. The strategy for the application logic is as follows:
+            <ul>
+                <li>Load the key value string into an untyped dictionary (i.e. javascript/python variable, dynamic object in .net)</li> 
+                <li>Read the id_token property and store the JWT token to browser storage or a cookie.</li>
+                <li>In subsiquent http requests to services, Add a header in the form of Authorization:bearer  [id_token]. (Replace [id_token] with token described above) </li>                    
+            </ul>
+        </div>
+
+        <strong>5. Configure App Service to validate token</strong>
+        <div>
+            It is important to keep in mind that in order for a service to be secure using token based authentication the tokens must be validated after the JWT 
+            is recieved in the header of incoming requests. Similar to aquiring the token, many libaries exist to assist in implementing the logic.  
+            However, all must follow the process below to validate the token and ensure the endpoint is not being tampered with.
+            <ul>
+                <li>Issuer ID </li>
+                <li>Key ID </li>
+                <li>Expiration Time </li>
+                <li>Public Key: Validates Signiture</li>
+            </ul>
+            
+
+
+        </div>
+
+        <strong>Implement PCKE (optional)</strong>
+    </section>
+    </article>  
+</div>
+
