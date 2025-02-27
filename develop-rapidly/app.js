@@ -23,17 +23,17 @@ app.get('/', (req, res) => {
 app.get('/oidc', (req, res) => {
     res.render('index', { header: header, body: oidcSummaryArticle });
 });
-app.get('/oidc/auth-code', (req, res) => {
+app.get('/oidc-auth-code', (req, res) => {
     res.render('index', { header: header, body: oidcAuthCodeArticle });
 });
-app.get('/oidc/client-cred', (req, res) => {
+app.get('/oidc-client-cred', (req, res) => {
     res.render('index', { header: header, body: oidcClientCredArticle });
 });
 
-app.get('/rest/summary', (req, res) => {
+app.get('/rest-summary', (req, res) => {
     res.render('index', { header: header, body: restSummaryArticle });
 });
-app.get('/rest/example', (req, res) => {
+app.get('/rest-example', (req, res) => {
     res.render('index', { header: header, body: restExampleArticle });
 });
 

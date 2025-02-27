@@ -1,0 +1,154 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/index.css">
+  <meta charset="utf-8"> 
+  <title>Develop Rapidly</title>  
+  <meta content="Develop Software with AI, REST, RIA, and OIDC" name="description">
+  <meta name="author" content="Scott Grau">
+  <meta name="description" content="Develop Software with AI, REST, RIA, and OIDC">
+  <meta name="keywords" content="AI, REST, RIA, OIDC">
+  <meta name="viewport" content="width=device-width, initial-scal=1">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico"> 
+  <base href="/">
+
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Title of the webpage">
+  <meta property="og:description" content="Description of the webpage">
+  <meta property="og:image" content="URL to image">
+  <meta property="og:url" content="URL of the webpage"> 
+
+  <link rel="stylesheet" href="/css/bootstrap-5.3.3/css/bootstrap.min.css">
+  <script src="/css/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
+
+
+</head>
+<body>
+  <div class="header shadow2">  
+    
+<link rel="stylesheet" href="css/header.css">
+<div class="navbar navbar-expand-lg navbar-light" >
+  <header>
+    <a class="navbar-brand" href="#"><img class="logo" src="/images/logo.png"/></a>
+  </header>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <nav class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item dropdown">
+        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">OIDC</a>
+        <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/oidc">Open ID Connect Overview</a></li>
+        <li><a class="dropdown-item" href="/oidc/auth-code">OIDC Authorization Code Grant Type</a></li> 
+        <li><a class="dropdown-item" href="/oidc/client-cred">OIDC Client Credentials Grant Type</a></li> 
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">REST</a>
+        <ul class="dropdown-menu">
+          <a class="dropdown-item" href="/rest/summary">REST APIs Overview</a>
+          <a class="dropdown-item" href="/rest/example">REST Example</a> 
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">RIA</a>
+        <ul class="dropdown-menu">
+          <a class="dropdown-item" href="articles/ria/summary">RIA Single Page App Overview</a>
+          <a class="dropdown-item" href="articles/ria/example">Angular Web Client Example</a>  
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">AI</a>
+        <ul class="dropdown-menu">
+          <a class="dropdown-item" href="articles/ai/summary">Machine Learning Overview</a>
+          <a class="dropdown-item" href="articles/ai/example">Machine Learning Example</a>  
+        </ul>
+      </li>
+    </ul>        
+  </nav>
+</div>
+
+
+  </div>
+  <main class="main">
+    <link rel="stylesheet" href="css/oidc-summary.css">
+    <article class="flex-main" style="border:1px solid blue">
+        <h2 class="lead">Open ID Connect (OIDC) Overview</h2>
+        <section>
+            <h3>What is OIDC?</h3>        
+            <p>
+                OIDC is a highly secure, loosely coupled token based application level protocol typically used to authenticate users and serices. 
+                Often called a "flow" the authentication process usually requires multiple redirects and requests over https resulting in a JWT token that can be used by both web 
+                client and api services as different areas of a RIA or web site are accessed.  
+            </p>
+            <aside>
+                <h4>How is OIDC Used?</h4>
+                <ul>
+                    <li>The actual exchange of user credentials (username/password, retinal scan, etc) occurs within the IdP domain when configured</li>
+                    <li>Also can be used to securely authenticate services using using private key (client secret) instead of password</li>
+                    <li>The OIDC protocol allows the "flow" or protocol configuration to be altered based on environment application need, which are called Grant Types and desribed below</li>
+                </ul>
+            </aside>
+        </section>
+        <section>
+            <h3>Grant Types</h3>
+            <p>OIDC is decoupled and can run on many platforms and environments requiring the protocol to be highly configurable based on application need. 
+            The configuration consists of channging Grant Type, which will alter the http sequence ("flow") required by the protocol to receive a JWT token. 
+            </p>
+            <aside>
+               
+                <table>
+                    <thead><tr><th>Name</th><th>Usage</th><th>Description</th></tr></thead>            
+                    <tbody>
+                        <tr>
+                            <th scope="row">Authorization Code</th>
+                            <td>Most Secure End User Autthentication</td>
+                            <td>Ensures end user's use IdP services for actual identity verification (i.e. password entry, retina scan,etc)</td>
+                            
+                        </tr>
+                        <tr>
+                            <th scope="row">Client Credentials</th>
+                            <td>Use for Service to Service authentication</td>
+                            <td>Typically used for automation. Should not be used for user impersonation</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Implicit Grant Type</th>
+                            <td>Used in environments where handling client secret is not feasible</td>
+                            <td>Similar to authorization code grant, except token provied after login instead of autorization code.  Often used for mobile apps. Should always be used with PKCE</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Resource Owner Password</th>
+                            <td>Used when username/password of use are forwarded to IdP (ie custom login form) </td>
+                            <td>A highy insecure method of authentication due touser credentials are handled outside of IdP domain. Usage is not advised</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Resource Owner Password</th>
+                            <td>Used when username/password of use are forwarded to IdP (ie custom login form) </td>
+                            <td>A highy insecure method of authentication due touser credentials are handled outside of IdP domain. Usage is not advised</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Resource Owner Password</th>
+                            <td>Used when username/password of use are forwarded to IdP (ie custom login form) </td>
+                            <td>A highy insecure method of authentication due touser credentials are handled outside of IdP domain. Usage is not advised</td>
+                        </tr>        
+                        <tr>
+                            <th scope="row">Device Code Flow</th>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">On Behalf Flow</th>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </aside>
+        </section> 
+    </article>
+
+ 
+  </main>
+</body>
